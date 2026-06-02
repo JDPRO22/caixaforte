@@ -2,13 +2,13 @@ const supabaseUrl = 'https://vxccqevjaijextigxbsb.supabase.co';
 
 const supabaseKey = 'sb_publishable_hsrzDSF7xQuKI6OtQ_IumA_bInehxZM';
 
-const supabase = window.supabase.createClient(
+const supabaseClient = window.supabase.createClient(
   supabaseUrl,
   supabaseKey
 );
 // Cadastro de novos usuários
 async function cadastrar(email, senha, nome) {
-    const { data, error } = await supabase.auth.signUp({
+    await supabaseClient.auth.signUp.
         email: email,
         password: senha,
         options: {
@@ -23,14 +23,14 @@ async function cadastrar(email, senha, nome) {
 
 // Login de usuários existentes com Validação de Bloqueio
 async function login(email, senha) {
-    const { data, error } = await supabase.auth.signInWithPassword({
+    await supabaseClient.auth.signInWithPassword.
         email: email,
         password: senha
     });
     if (error) throw error;
 
     // Verificar se o usuário está ativo na nossa tabela customizada
-    const { data: perfil, error: perfilError } = await supabase
+    const { data: perfil, error: perfilError } = await supabaseClient.
         .from('usuarios')
         .select('ativo')
         .eq('id', data.user.id)
@@ -45,28 +45,28 @@ async function login(email, senha) {
 
 // Logout
 async function logout() {
-    const { error } = await supabase.auth.signOut();
+    const { error } = await supabaseClient.auth.signOut();
     if (error) console.error("Erro ao deslogar:", error.message);
     window.location.href = "login.html";
 }
 
 // Proteção de Páginas
 async function verificarAcesso() {
-    const { data: { session } } = await supabase.auth.getSession();
+    const { data: { session } } = await supabaseClient.auth.getSession()
 
     if (!session) {
         window.location.href = "login.html";
         return;
     }
 
-    const { data: perfil } = await supabase
+    const { data: perfil } = await supabaseClient
         .from('usuarios')
         .select('ativo')
         .eq('id', session.user.id)
         .single();
 
     if (!perfil || !perfil.ativo) {
-        await supabase.auth.signOut();
+        await supabaseClient.auth.signOut();
         window.location.href = "login.html";
     }
 }// Garante a visibilidade das funções para o HTML em escopos isolados
