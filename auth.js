@@ -1,14 +1,14 @@
 const supabaseUrl = 'https://vxccqevjaijextigxbsb.supabase.co';
-
-const supabaseKey = 'sb_publishable_hsrzDSF7xQuKI6OtQ_IumA_bInehxZM';
+const supabaseKey = 'sb_publishable_hsrzDSF7xQuKIGOtQ_IUmA_binchzM';
 
 const supabaseClient = window.supabase.createClient(
-  supabaseUrl,
-  supabaseKey
+    supabaseUrl,
+    supabaseKey
 );
+
 // Cadastro de novos usuários
 async function cadastrar(email, senha, nome) {
-    await supabaseClient.auth.signUp.
+    const { data, error } = await supabaseClient.auth.signUp({
         email: email,
         password: senha,
         options: {
@@ -17,30 +17,35 @@ async function cadastrar(email, senha, nome) {
             }
         }
     });
+
     if (error) throw error;
     return data;
 }
 
 // Login de usuários existentes com Validação de Bloqueio
 async function login(email, senha) {
-    await supabaseClient.auth.signInWithPassword.
+    // 1. Tenta autenticar no Supabase Auth
+    const { data: authData, error: authError } = await supabaseClient.auth.signInWithPassword({
         email: email,
         password: senha
     });
-    if (error) throw error;
 
-    // Verificar se o usuário está ativo na nossa tabela customizada
-    const { data: perfil, error: perfilError } = await supabaseClient.
+    if (authError) throw authError;
+
+    // 2. Busca o perfil do usuário na tabela 'usuarios'
+    const { data: perfil, error: perfilError } = await supabaseClient
         .from('usuarios')
         .select('ativo')
-        .eq('id', data.user.id)
+        .eq('id', authData.user.id)
         .single();
 
+    // 3. Validação de bloqueio
     if (perfilError || !perfil.ativo) {
-        await logout();
+        await supabaseClient.auth.signOut();
         throw new Error("Sua conta está desativada ou bloqueada. Contate o administrador.");
     }
-    return data;
+
+    return authData;
 }
 
 // Logout
@@ -52,13 +57,14 @@ async function logout() {
 
 // Proteção de Páginas
 async function verificarAcesso() {
-    const { data: { session } } = await supabaseClient.auth.getSession()
+    const { data: { session } } = await supabaseClient.auth.getSession();
 
     if (!session) {
         window.location.href = "login.html";
         return;
     }
 
+    // Verifica se o usuário ainda está ativo
     const { data: perfil } = await supabaseClient
         .from('usuarios')
         .select('ativo')
@@ -66,9 +72,12 @@ async function verificarAcesso() {
         .single();
 
     if (!perfil || !perfil.ativo) {
-        await supabaseClient.auth.signOut();
-        window.location.href = "login.html";
+        await logout();
     }
-}// Garante a visibilidade das funções para o HTML em escopos isolados
+}
+
+// Garante a visibilidade das funções para o HTML em escopos isolados
 window.cadastrar = cadastrar;
 window.login = login;
+window.logout = logout;
+window.verificarAcesso = verificarAcesso;
