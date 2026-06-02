@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caixa Forte - Cadastro</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="./auth.js" defer></script>
+</head>
+<body style="background-color: #121212; color: #fff; font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0;">
+    <div style="background-color: #1e1e1e; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); width: 100%; max-width: 360px;">
+        <h2 style="margin-top: 0; text-align: center; color: #28a745;">Caixa Forte - Cadastro</h2>
+        <form id="form-cadastro">
+            <label style="display: block; margin-bottom: 5px;">Nome Completo</label>
+            <input type="text" id="cadastro-nome" style="width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 4px; border: 1px solid #333; background-color: #2a2a2a; color: #fff; box-sizing: border-box;" required>
+            
+            <label style="display: block; margin-bottom: 5px;">E-mail</label>
+            <input type="email" id="cadastro-email" style="width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 4px; border: 1px solid #333; background-color: #2a2a2a; color: #fff; box-sizing: border-box;" required>
+            
+            <label style="display: block; margin-bottom: 5px;">Senha (mínimo 6 caracteres)</label>
+            <input type="password" id="cadastro-senha" style="width: 100%; padding: 10px; margin-bottom: 20px; border-radius: 4px; border: 1px solid #333; background-color: #2a2a2a; color: #fff; box-sizing: border-box;" required>
+            
+            <button type="submit" style="width: 100%; padding: 12px; background-color: #28a745; color: white; border: none; border-radius: 4px; font-weight: bold; cursor: pointer;">Criar Minha Conta</button>
+        </form>
+        <p style="text-align: center; margin-top: 20px; font-size: 14px;">Já possui acesso? <a href="login.html" style="color: #28a745; text-decoration: none;">Faça login</a></p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('form-cadastro').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const nome = document.getElementById('cadastro-nome').value;
+                const email = document.getElementById('cadastro-email').value;
+                const senha = document.getElementById('cadastro-senha').value;
+
+                try {
+                    await cadastrar(email, senha, nome);
+                    alert('Cadastro realizado com sucesso! Redirecionando...');
+                    window.location.href = 'login.html';
+                } catch (error) {
+                    alert('Erro no cadastro: ' + error.message);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
