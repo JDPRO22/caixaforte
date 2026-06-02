@@ -1,6 +1,6 @@
 const supabaseUrl = 'https://vxccqevjaijextigxbsb.supabase.co';
 // Cole a chave ANON PUBLIC aqui abaixo entre as aspas:
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ4Y2NxZXZqYWlqZXh0aWd4YnNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAzNzAzMDcsImV4cCI6MjA5NTk0NjMwN30.dY4qw3fTGWfRV2N2cxXHN93Po7BljHC337YwCG6Xzf0'; 
+const supabaseKey = 'sb_publishable_hsrzDSF7xQuKI6OtQ_IumA_bInehxZM'; 
 const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
 async function cadastrar(email, senha, nome) {
     const { data, error } = await supabaseClient.auth.signUp({
