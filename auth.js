@@ -1,5 +1,5 @@
 const supabaseUrl = 'https://vxccqevjaijjextigxbsb.supabase.co';
-const supabaseKey = 'COLE_AQUI_A_CHAVE_JWT_QUE_VOCÊ_COPIOU_NO_PASSO_2';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ4Y2NxZXZqYWlqZXh0aWd4YnNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAzNzAzMDcsImV4cCI6MjA5NTk0NjMwN30.dY4qw3fTGWfRV2N2cxXHN93Po7BljHC337YwCG6Xzf0';
 
 const supabaseClient = window.supabase.createClient(
     supabaseUrl,
