@@ -1,5 +1,5 @@
-const supabaseUrl = 'https://vxccqevjaijextigxbsb.supabase.co';
-const supabaseKey = 'sb_publishable_hsrzDSF7xQuKIGOtQ_IUmA_binchzM';
+const supabaseUrl = 'https://vxccqevjaijjextigxbsb.supabase.co';
+const supabaseKey = 'COLE_AQUI_A_CHAVE_JWT_QUE_VOCÊ_COPIOU_NO_PASSO_2';
 
 const supabaseClient = window.supabase.createClient(
     supabaseUrl,
